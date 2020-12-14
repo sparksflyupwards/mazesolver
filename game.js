@@ -109,7 +109,7 @@ function solveMazeWorker(pos) {
         
             console.log("at: "+pos.x +" "+pos.y)
           
-                ctx.fillStyle = "pink";
+                ctx.fillStyle = "grey";
                 let spot = pos;
                 ctx.fillRect(spot.x*cell_size,spot.y*cell_size,cell_size,cell_size);
            
