@@ -91,6 +91,7 @@ solveMazeRecursive(start);
 
 
 function solveMazeRecursive(pos){
+    //TODO: remove and implement a*
     return solveMazeWorker(pos)
 
 }
@@ -105,7 +106,7 @@ function checkPointInPath (pos,_path){
 }
 function solveMazeWorker(pos) {
     //if we are there give the path back
-   
+ 
         
             console.log("at: "+pos.x +" "+pos.y)
           
