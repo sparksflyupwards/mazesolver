@@ -3,7 +3,7 @@ canvas = document.getElementById('canva');
     
     
     let map = [];
-	let cell_size=25;
+	let cell_size=50;
 
     let map_width = canvas.width/cell_size;
     let map_height = canvas.height/cell_size;
@@ -96,6 +96,7 @@ function solveMazeRecursive(pos){
 
 }
 
+//tells you if the point sent is in the current existing path
 function checkPointInPath (pos,_path){
     for (point of _path){
         if (point.x == pos.x && point.y == pos.y){
@@ -114,12 +115,16 @@ function solveMazeWorker(pos) {
                 let spot = pos;
                 ctx.fillRect(spot.x*cell_size,spot.y*cell_size,cell_size,cell_size);
            
-        
-        
+         /**
+         * checks for termination conditions
+         */
+
+        //check if we're at the finish line
         if(pos.x ==finish.x && pos.y == finish.y){
             return true;
         }
-    
+        
+       
         //x bounds
          if(pos.x<0||pos.x>=map_width){
             return false;
@@ -128,6 +133,7 @@ function solveMazeWorker(pos) {
         if(pos.y<0||pos.y>=map_height){
             return false;
         }
+
         //checks to see if there is a wall there
         if(map[pos.x][pos.y]!=0){
             ctx.fillStyle = "purple";
@@ -138,21 +144,24 @@ function solveMazeWorker(pos) {
         }
         
         path.push(pos)
+
+        /**
+         * 
+         * now adds a new move to the recursive stack
+         */
         
         //try moving right
-      
-        //console.log("move right")
         right_pos = {x:pos.x+1, y:pos.y}
-        
-        //console.log("we have been to right: " + checkPointInPath(right_pos, path))
+        //check to ensure if the new right position is not in the path then recursively call into the stack 
         if(!checkPointInPath(right_pos, path)){
         right_path = solveMazeWorker(right_pos)
+
         if (right_path != false){
             return true
         }
+        
         }
         
-        //console.log("path is not right ")
         
     
         //try moving down
