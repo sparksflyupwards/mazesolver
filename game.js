@@ -3,7 +3,8 @@ canvas = document.getElementById('canva');
     
     
     let map = [];
-	let cell_size=50;
+    let cell_size=10;
+    let saturation_index = 2.34;
 
     let map_width = canvas.width/cell_size;
     let map_height = canvas.height/cell_size;
@@ -23,13 +24,22 @@ ctx.fillRect(start.x*cell_size,start.y*cell_size,cell_size,cell_size);
 ctx.fillStyle = "blue";
 ctx.fillRect(finish.x*cell_size,finish.y*cell_size,cell_size,cell_size);
 
-//creates map of zeros
+//creates map with random walls
 for(let i=0; i<map_width; i++){
 	let row =[]
 	for(let j=0; j<map_height; j++){
-	row[j]=0;
+        random_num = Math.random()*10;
+        if(random_num<saturation_index){
+            row[j]=1;
+            ctx.fillStyle = "green";
+            ctx.fillRect(i*cell_size,j*cell_size,cell_size,cell_size);
+        }
+        else {
+            row[j]=0;
+        }
+	
 	}
-	map[i]=row;
+    map[i]=row;
 }
  
 canvas.addEventListener("mousemove", function (e) {
@@ -81,253 +91,21 @@ function printPath(_somePath){
 }
 
 function drawSolution(){
-solveMazeRecursive(start);
+solveMaze(start);
  if(path){
     printPath(path)
+    }
 }
-
-
-}
-
 
 function solveMazeRecursive(pos){
     //TODO: remove and implement a*
     return solveMazeWorker(pos)
 
 }
-
-//tells you if the point sent is in the current existing path
-function checkPointInPath (pos,_path){
-    for (point of _path){
-        if (point.x == pos.x && point.y == pos.y){
-            return true
-        }
-    }
-    return false
-}
-function solveMazeWorker(pos) {
-    //if we are there give the path back
- 
-        
-            console.log("at: "+pos.x +" "+pos.y)
-          
-                ctx.fillStyle = "grey";
-                let spot = pos;
-                ctx.fillRect(spot.x*cell_size,spot.y*cell_size,cell_size,cell_size);
-           
-         /**
-         * checks for termination conditions
-         */
-
-        //check if we're at the finish line
-        if(pos.x ==finish.x && pos.y == finish.y){
-            return true;
-        }
-        
-       
-        //x bounds
-         if(pos.x<0||pos.x>=map_width){
-            return false;
-        }
-        //y bounds
-        if(pos.y<0||pos.y>=map_height){
-            return false;
-        }
-
-        //checks to see if there is a wall there
-        if(map[pos.x][pos.y]!=0){
-            ctx.fillStyle = "purple";
-            let spot = pos;
-            ctx.fillRect(spot.x*cell_size,spot.y*cell_size,cell_size,cell_size);
-            //console.log("STEPPED ON PATH")
-            return false;
-        }
-        
-        path.push(pos)
-
-        /**
-         * 
-         * now adds a new move to the recursive stack
-         */
-        
-        //try moving right
-        right_pos = {x:pos.x+1, y:pos.y}
-        //check to ensure if the new right position is not in the path then recursively call into the stack 
-        if(!checkPointInPath(right_pos, path)){
-        right_path = solveMazeWorker(right_pos)
-
-        if (right_path != false){
-            return true
-        }
-        
-        }
-        
-        
-    
-        //try moving down
-        down_pos = {x:pos.x, y:pos.y+1}
-        if(!checkPointInPath(down_pos,path)){
-            down_path = solveMazeWorker(down_pos)
-            if (down_path != false){
-                return true
-            }
-        }
-        
-        
-
-        
-        //console.log("the path is now: ")
-        //printPath(path)
-        //console.log("path is not down ")
-
-        //try moving up
-        up_pos = {x:pos.x, y:pos.y-1}
-        if(!checkPointInPath(up_pos, path)){
-            up_path = solveMazeWorker(up_pos)
-            if (up_path != false){
-                return true
-            }
-        }
-        
-        
-        //console.log("path is not up ")
-
-
-        //try moving left
-       // console.log("move left")
-        //alert("move left")
-        left_pos = {x:pos.x-1, y:pos.y}
-        if(!checkPointInPath(left_pos, path)){
-            left_path = solveMazeWorker(left_pos)
-
-        if (left_path != false){
-            return true
-        }
-        }
-        
-
-       // console.log("path is not left ")
-    
-         
-    
-         path.pop()
-    
-         return false
-
-
-   
-    
-
-
-
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function validateMove(pos){
-  //check if we've already stepped here before
-  let place;
-  for(let i=0; i<been_to.length; i++){
-    place = been_to[i];
-    if(place.x==pos.x&&place.y==pos.y){
-      return -1
-    }
-  }
-  
-	if(pos.x==finish.x&&pos.y==finish.y){
-		console.log("done!")
-		return true;
-	}
-	else if(pos.x<0||pos.x>=map_width){
-		return -1;
-	}
-	else if(pos.y<0||pos.y>=map_height){
-		return -1;
-	}
-	else if(map[pos.x][pos.y]!=0){
-		return -1;
-	}
-	else {
-   
-		return 0;
-	}
-}
-
-
-var printed = false;
 function solveMaze(pos){
   
-	//try to move right
-	//if you come across a wall or out of bound make move invalid
-	//if move invalid try to move down
-	// if move invalid try to move left
-	//if move invalid try to move up
-
-    
-		
-		//try right
-		let right = validateMove({x:pos.x+1,y:pos.y});
-		let down = validateMove({x:pos.x,y:pos.y+1});
-		let left = validateMove({x:pos.x-1,y:pos.y});
-		let up = validateMove({x:pos.x,y:pos.y-1});
-		if(right!=-1){
-			if(right==0){
-        been_to.push({x:pos.x+1,y:pos.y});
-				path.push({x:pos.x+1,y:pos.y});
-				solveMaze({x:pos.x+1,y:pos.y});
-			}
-			else{
-				return true;
-			}
-		}
-		else if(down!=-1){
-			if(down==0){
-        been_to.push({x:pos.x,y:pos.y+1});
-				path.push({x:pos.x,y:pos.y+1});
-				solveMaze({x:pos.x,y:pos.y+1});
-			}
-			else{
-				return true;
-			}
-
-		}
-		else if(up!=-1){
-			if(up==0){
-        been_to.push({x:pos.x,y:pos.y-1});
-				path.push({x:pos.x,y:pos.y-1});
-				solveMaze({x:pos.x,y:pos.y-1});
-			}
-			else{
-				return true;
-			}
-
-		}
-		else if(left!=-1){
-			if(left==0){
-        been_to.push({x:pos.x-1,y:pos.y});
-				path.push({x:pos.x-1,y:pos.y});
-				solveMaze({x:pos.x-1,y:pos.y});
-			}
-			else{
-				return true;
-			}
-
-		}
-		else {
-			return true;
-		}
+	//solveMaze({x:pos.x-1,y:pos.y});
+	
 	
 }
 
