@@ -4,7 +4,7 @@ canvas = document.getElementById('canva');
     
     let map = [];
     let cell_size=10;
-    let saturation_index = 2.34;
+    let saturation_index = 1;
 
     let map_width = canvas.width/cell_size;
     let map_height = canvas.height/cell_size;
@@ -25,22 +25,30 @@ ctx.fillStyle = "blue";
 ctx.fillRect(finish.x*cell_size,finish.y*cell_size,cell_size,cell_size);
 
 //creates map with random walls
-for(let i=0; i<map_width; i++){
-	let row =[]
-	for(let j=0; j<map_height; j++){
-        random_num = Math.random()*10;
-        if(random_num<saturation_index){
-            row[j]=1;
-            ctx.fillStyle = "green";
-            ctx.fillRect(i*cell_size,j*cell_size,cell_size,cell_size);
+
+timer2 = setInterval(() => {
+    ctx.clearRect(0,0,map_width,map_height);
+    for(let i=0; i<map_width; i++){
+        let row =[]
+        for(let j=0; j<map_height; j++){
+            random_num = Math.random()*10;
+            if(random_num<saturation_index && (i != 0 & j != 0)){
+                row[j]=1;
+                ctx.fillStyle = "green";
+                ctx.fillRect(i*cell_size,j*cell_size,cell_size,cell_size);
+                
+            }
+            else {
+                row[j]=0;
+            }
+        
         }
-        else {
-            row[j]=0;
-        }
-	
-	}
-    map[i]=row;
-}
+        map[i]=row;
+    }
+
+    
+}, 100);
+
  
 canvas.addEventListener("mousemove", function (e) {
        if(drawing){
