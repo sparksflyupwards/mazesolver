@@ -37,6 +37,9 @@ canvas = document.getElementById('canva');
         if(map[player_pos.x][player_pos.y] == 1){
             alert("PLAYER LOSES DONT TOUCH THE WALLS")
         }
+        else if(finish.x=player_pos.x && finish.y == player_pos.y){
+            alert("PLAYER WINS")
+        }
         else{
             ctx.fillStyle = "red";
             ctx.fillRect(player_pos.x*cell_size-1,player_pos.y*cell_size-1,cell_size,cell_size);
@@ -45,7 +48,7 @@ canvas = document.getElementById('canva');
 
 
 
-    },1000)
+    },100)
                     
     //{x:map_width-1,y:map_height-1};
 	let path = [];
