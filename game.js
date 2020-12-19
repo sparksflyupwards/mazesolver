@@ -1,6 +1,7 @@
 canvas = document.getElementById('canva');
    ctx = canvas.getContext("2d");
-    
+ 
+
     
     let map = [];
     let cell_size=8;
@@ -11,7 +12,41 @@ canvas = document.getElementById('canva');
     let drawing = false;
 
     let start = {x:0,y:0};
-    let finish = {x:40,y:40}
+    let finish = {x:40,y:40};
+
+    let player_pos ={x:map_width-1, y: map_height-1};
+    //let player_path = [];
+    let player_direction = "down";
+    let player_loop = setInterval(()=>{
+        console.log(player_direction)
+        switch(player_direction){
+            case "right":
+                player_pos.x +=1;
+                break;
+            case "down":
+                player_pos.y +=1;
+                break;
+            case "left":
+                player_pos.x -=1;
+                break;
+            case "up":
+                player_pos.y -=1;
+                break;
+        }
+
+        if(map[player_pos.x][player_pos.y] == 1){
+            alert("PLAYER LOSES DONT TOUCH THE WALLS")
+        }
+        else{
+            ctx.fillStyle = "red";
+            ctx.fillRect(player_pos.x*cell_size-1,player_pos.y*cell_size-1,cell_size,cell_size);
+        }
+
+
+
+
+    },1000)
+                    
     //{x:map_width-1,y:map_height-1};
 	let path = [];
     let been_to = [];
@@ -25,8 +60,6 @@ ctx.fillStyle = "blue";
 ctx.fillRect(finish.x*cell_size,finish.y*cell_size,cell_size,cell_size);
 
 //creates map with random walls
-
-
     for(let i=0; i<map_width; i++){
         let row =[]
         for(let j=0; j<map_height; j++){
@@ -53,7 +86,24 @@ canvas.addEventListener("mousemove", function (e) {
    		}
     }, false);
 
+    document.addEventListener("keydown", function (e) {
+       
+       switch(e.keyCode){
+           case 39:
+               player_direction = "right";
+                break;
+            case 40:
+                player_direction = "down";
+                break;
+            case 37:
+                player_direction = "left";
+                break;
+            case 38:
+                player_direction = "up"
+                break;
 
+       }
+     }, false);
    canvas.addEventListener("mousedown", function (e) {
        drawing = !drawing;
     }, false);
