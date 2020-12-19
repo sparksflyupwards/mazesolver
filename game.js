@@ -4,7 +4,7 @@ canvas = document.getElementById('canva');
     
     let map = [];
     let cell_size=8;
-    let saturation_index = 1;
+    let saturation_index = 0;
 
     let map_width = canvas.width/cell_size;
     let map_height = canvas.height/cell_size;
