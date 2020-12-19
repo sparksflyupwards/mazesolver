@@ -3,16 +3,16 @@ canvas = document.getElementById('canva');
     
     
     let map = [];
-    let cell_size=10;
+    let cell_size=8;
     let saturation_index = 1;
 
     let map_width = canvas.width/cell_size;
     let map_height = canvas.height/cell_size;
-
     let drawing = false;
 
     let start = {x:0,y:0};
-	let finish = {x:map_width-1,y:map_height-1};
+    let finish = {x:2,y:2}
+    //{x:map_width-1,y:map_height-1};
 	let path = [];
     let been_to = [];
 
@@ -26,8 +26,7 @@ ctx.fillRect(finish.x*cell_size,finish.y*cell_size,cell_size,cell_size);
 
 //creates map with random walls
 
-timer2 = setInterval(() => {
-    ctx.clearRect(0,0,map_width,map_height);
+
     for(let i=0; i<map_width; i++){
         let row =[]
         for(let j=0; j<map_height; j++){
@@ -46,8 +45,6 @@ timer2 = setInterval(() => {
         map[i]=row;
     }
 
-    
-}, 100);
 
  
 canvas.addEventListener("mousemove", function (e) {
@@ -85,7 +82,7 @@ function drawOnGrid(e){
 function printPath(_somePath){
     i=0
     timer = setInterval(() => {
-        if(i>=_somePath.length){
+        if(i>=_somePath.length-1){
             clearInterval(timer)
         }
         console.log("Path: " + _somePath[i].x+" "+_somePath[i].y)
@@ -95,25 +92,81 @@ function printPath(_somePath){
         i = i + 1
 
         
-    }, 100);
+    }, 1);
 }
 
 function drawSolution(){
 solveMaze(start);
+console.log("final path ")
+console.log(path)
  if(path){
     printPath(path)
     }
 }
 
-function solveMazeRecursive(pos){
-    //TODO: remove and implement a*
-    return solveMazeWorker(pos)
-
+function checkBeenTo(pos){
+    for(point of been_to){
+        if(point.x == pos.x && point.y == pos.y){
+            return true;
+        }
+    }
+    return false;
 }
+
+function distance(a,b){
+    return Math.abs(Math.sqrt(Math.pow((b.x-a.x),2)+Math.pow((b.y-a.y),2)))
+}
+
 function solveMaze(pos){
-  
-	//solveMaze({x:pos.x-1,y:pos.y});
-	
+try {
+
+	if(pos.x ==  finish.x && pos.y == finish.y){
+        console.log("found")
+        return 1;
+    }
+    
+    if(pos.x >= map_width || pos.x<0 || pos.y < 0 || pos.y >= map_height){
+        console.log("out")
+        console.log(pos)
+        return -1;
+    }
+    //console.log("at "+pos.x+ map[pos.x])
+    if(map[pos.x][pos.y]){
+        //console.log("stepped wrong")
+        return -1;
+    }
+
+    if(checkBeenTo(pos)){
+        return -1;
+    }
+    
+    been_to.push(pos);
+    path.push(pos)
+    
+    //try right
+    if(solveMaze({x:pos.x +1, y:pos.y}) == 1){
+            return 1;
+    }
+    
+    
+    //try down
+    if(solveMaze({x:pos.x, y:pos.y+1}) == 1){
+        return 1;
+    }
+    //try left
+    if(solveMaze({x:pos.x-1, y:pos.y}) == 1){
+        return 1;
+    }
+    //try up
+    if(solveMaze({x:pos.x, y:pos.y-1}) == 1){
+        return 1;
+    }
+    
+    return;
+}
+catch (ex){
+    alert("yo we got exception: "+ex)
+}
 	
 }
 
