@@ -11,7 +11,7 @@ canvas = document.getElementById('canva');
     let drawing = false;
 
     let start = {x:0,y:0};
-    let finish = {x:2,y:2}
+    let finish = {x:40,y:40}
     //{x:map_width-1,y:map_height-1};
 	let path = [];
     let been_to = [];
@@ -92,7 +92,7 @@ function printPath(_somePath){
         i = i + 1
 
         
-    }, 1);
+    }, 0.1);
 }
 
 function drawSolution(){
