@@ -21,16 +21,25 @@ import {Que} from './algorithmtools.js'
         console.log(player_direction)
         switch(player_direction){
             case "right":
-                player_pos.x +=1;
+                if(player_pos.x<=this.map_width){
+                    player_pos.x +=1;
+                }
+               
                 break;
             case "down":
+                if(player_pos.y<=this.map_height){
                 player_pos.y +=1;
+                }
                 break;
             case "left":
+                if(player_pos.x>=0){
                 player_pos.x -=1;
+                }
                 break;
             case "up":
+                if(player_pos.y>=0){
                 player_pos.y -=1;
+                }
                 break;
         }
 
@@ -66,7 +75,7 @@ ctx.fillRect(finish.x*cell_size,finish.y*cell_size,cell_size,cell_size);
     for(let i=0; i<map_width; i++){
         let row =[]
         for(let j=0; j<map_height; j++){
-            random_num = Math.random()*10;
+            let random_num = Math.random()*10;
             if(random_num<saturation_index && (i != 0 & j != 0)){
                 row[j]=1;
                 ctx.fillStyle = "green";
@@ -222,6 +231,14 @@ catch (ex){
 }
 	
 }
+
+line = new Que();
+line.add(2)
+line.add(0)
+line.add(22)
+line.printQue();
+line.pop()
+line.printQue();
 
 
 
