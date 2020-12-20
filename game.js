@@ -38,7 +38,7 @@ canvas = document.getElementById('canva');
             alert("PLAYER LOSES DONT TOUCH THE WALLS")
         }
         else if(finish.x=player_pos.x && finish.y == player_pos.y){
-            alert("PLAYER WINS")
+            alert('YA WIN')
         }
         else{
             ctx.fillStyle = "red";
