@@ -1,9 +1,11 @@
-canvas = document.getElementById('canva');
-   ctx = canvas.getContext("2d");
+import {Que} from './algorithmtools.js'
+
+    let canvas = document.getElementById('canva');
+   let ctx = canvas.getContext("2d");
     
     
     let map = [];
-	let cell_size=50;
+	let cell_size=10;
 
     let map_width = canvas.width/cell_size;
     let map_height = canvas.height/cell_size;
@@ -11,7 +13,7 @@ canvas = document.getElementById('canva');
     let drawing = false;
 
     let start = {x:0,y:0};
-	let finish = {x:map_width-1,y:map_height-1};
+	let finish = {x: Math.round(map_width/2)-1,y:Math.round(map_height/2)-1};
 	let path = [];
     let been_to = [];
 
@@ -77,7 +79,7 @@ function printPath(_somePath){
         i = i + 1
 
         
-    }, 100);
+    }, 1);
 }
 
 function drawSolution(){
@@ -215,14 +217,7 @@ function solveMazeWorker(pos) {
          return false
 
 
-   
-    
-
-
-
-
 }
-
 
 
 
