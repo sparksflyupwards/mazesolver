@@ -1,11 +1,11 @@
-canvas = document.getElementById('canva');
-   ctx = canvas.getContext("2d");
- 
+import {Que} from './algorithmtools.js'
 
+    let canvas = document.getElementById('canva');
+   let ctx = canvas.getContext("2d");
+    
     
     let map = [];
-    let cell_size=8;
-    let saturation_index = 0;
+	let cell_size=10;
 
     let map_width = canvas.width/cell_size;
     let map_height = canvas.height/cell_size;
