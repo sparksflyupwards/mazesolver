@@ -3,7 +3,7 @@
     let canvas = document.getElementById('canva');
    let ctx = canvas.getContext("2d");
     
-    let saturation_index = 1;
+    let saturation_index = 0.1;
     let map = [];
 	let cell_size=10;
 
@@ -223,7 +223,7 @@ function solveMaze(pos){
     if(solveMaze({x:pos.x, y:pos.y-1}) == 1){
         return 1;
     }
-    
+    path.pop();
     return;
 }
 
