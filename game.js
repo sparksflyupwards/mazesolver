@@ -141,20 +141,45 @@ function drawOnGrid(e){
 
 
 
-function printPath(_somePath){
-    i=0
-    timer = setInterval(() => {
+function printPath(_somePath,color){
+    
+
+    let x = new Promise((resolve, reject)=>{
+        i=0
+        timer = setInterval(() => {
         if(i>=_somePath.length-1){
             clearInterval(timer)
+            resolve("finished drawing path")
         }
         console.log("Path: " + _somePath[i].x+" "+_somePath[i].y)
-        ctx.fillStyle = "red";
+        ctx.fillStyle = color;
         let spot = _somePath[i];
         ctx.fillRect(spot.x*cell_size,spot.y*cell_size,cell_size,cell_size);
         i = i + 1
 
         
-    }, 0.1);
+         }, 0.1);
+    }).then(
+        (result)=>{
+            i=0
+            _somePath = been_to
+            timer = setInterval(() => {
+            if(i>=_somePath.length-1){
+                clearInterval(timer)
+            }
+            console.log("Path: " + _somePath[i].x+" "+_somePath[i].y)
+            ctx.fillStyle = "grey";
+            let spot = _somePath[i];
+            ctx.fillRect(spot.x*cell_size,spot.y*cell_size,cell_size,cell_size);
+            i = i + 1
+    
+            
+             }, 0.1);
+        })
+
+    
+       
+    
 }
 
 function drawSolution(){
@@ -162,7 +187,8 @@ solveMaze(start);
 console.log("final path ")
 console.log(path)
  if(path){
-    printPath(path)
+    printPath(path,"red")
+ 
     }
 }
 
@@ -180,28 +206,30 @@ function distance(a,b){
 }
 
 function solveMaze(pos){
-
+    //see if we found it
 	if(pos.x ==  finish.x && pos.y == finish.y){
         console.log("found")
-        alert("DONE" + pos.x +"  "+ pos.y+ "  "+finish.x + "  "+finish.y)
+      //  alert("DONE" + pos.x +"  "+ pos.y+ "  "+finish.x + "  "+finish.y)
         return 1;
     }
-    
+    //see if we are out of bounds
     if(pos.x >= map_width || pos.x<0 || pos.y < 0 || pos.y >= map_height){
         console.log("out")
         console.log(pos)
         return -1;
     }
-    //console.log("at "+pos.x+ map[pos.x])
+
+    //check collision with a wall
     if(map[pos.x][pos.y]){
-        //console.log("stepped wrong")
         return -1;
     }
-
+    
+    //ensure we arent on a visited area
     if(checkBeenTo(pos)){
         return -1;
     }
     
+    //add to both been_to and to the path but, if this doesnt recursively lead to an answer we will remove the whole section.
     been_to.push(pos);
     path.push(pos)
     
@@ -224,7 +252,7 @@ function solveMaze(pos){
         return 1;
     }
     path.pop();
-    return;
+    return -2;
 }
 
 	
