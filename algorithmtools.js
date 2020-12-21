@@ -1,4 +1,3 @@
-export {Que}
 
 class Que {
     constructor(){

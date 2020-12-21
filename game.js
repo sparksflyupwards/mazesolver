@@ -1,9 +1,9 @@
-import {Que} from './algorithmtools.js'
+
 
     let canvas = document.getElementById('canva');
    let ctx = canvas.getContext("2d");
     
-    
+    let saturation_index = 1;
     let map = [];
 	let cell_size=10;
 
@@ -46,7 +46,7 @@ import {Que} from './algorithmtools.js'
         if(map[player_pos.x][player_pos.y] == 1){
             alert("PLAYER LOSES DONT TOUCH THE WALLS")
         }
-        else if(finish.x=player_pos.x && finish.y == player_pos.y){
+        else if(finish.x==player_pos.x && finish.y == player_pos.y){
             alert('YA WIN')
         }
         else{
@@ -180,10 +180,10 @@ function distance(a,b){
 }
 
 function solveMaze(pos){
-try {
 
 	if(pos.x ==  finish.x && pos.y == finish.y){
         console.log("found")
+        alert("DONE" + pos.x +"  "+ pos.y+ "  "+finish.x + "  "+finish.y)
         return 1;
     }
     
@@ -226,19 +226,9 @@ try {
     
     return;
 }
-catch (ex){
-    alert("yo we got exception: "+ex)
-}
-	
-}
 
-line = new Que();
-line.add(2)
-line.add(0)
-line.add(22)
-line.printQue();
-line.pop()
-line.printQue();
+	
+
 
 
 
